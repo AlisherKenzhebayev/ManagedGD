@@ -19,7 +19,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField()]
     [Tooltip("Ground Check transform")]
     private Transform groundChecker;
-
+    [SerializeField()]
+    [Tooltip("Ground RayCast mask")]
+    private LayerMask groundLayerMask;
+    [SerializeField()]
+    [Tooltip("Array, multiple animation states")]
+    private AnimatorOverrideController[] animationArray;
+    
     // Assuming the initial sprites are all right-facing
     private bool isOrientationFixed = false; // Some moves might require the orientation to be fixed.
     private bool isJumping = false;
@@ -27,7 +33,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rigidBody;
     private SpriteRenderer spriteRenderer;
     private List<ICommand> Commands;
-    private Animator Animator;
+    private Animator m_Animator;
+    private int m_CurrentAnimOverride = 0;
 
     void Start() {
         rigidBody = this.GetComponent<Rigidbody2D>();
@@ -40,19 +47,29 @@ public class PlayerController : MonoBehaviour
         {
             Debug.LogError("No SpriteRenderer component found!");
         }
-        Animator = this.GetComponentInChildren<Animator>();
-        if (Animator == null)
+        m_Animator = this.GetComponentInChildren<Animator>();
+        if (m_Animator == null)
         {
             Debug.LogError("No Animator component found!");
         }
-
+        
         Commands = new List<ICommand>();
+
+        if (m_Animator != null)
+        {
+            SetAnimationOverride(animationArray[m_CurrentAnimOverride]);
+        }
+    }
+
+    void SetAnimationOverride(AnimatorOverrideController overrideController) {
+        this.m_Animator.runtimeAnimatorController = overrideController;
+        return;
     }
 
     void Update()
     {
-        HandleInput();
         RotatePlayerRenderer();
+        HandleInput();
 
         Debug.Log("Horizontal Velocity - " + Mathf.Abs(rigidBody.velocity.x) + isJumping);
     }
@@ -60,11 +77,44 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         CheckGround();
+
+        PlayerInput playerInput = ControlsManager.instance.GetInput();
+        Debug.LogError(playerInput.axisInputs +  " " + playerInput.jumpInput + " " + playerInput.actionInput );
+
+        Commands.Clear();
+        if (playerInput.axisInputs.x > 0)
+        {
+            Commands.Add(new MoveRightCommand(rigidBody)
+                .setMoveForceAmplitude(moveForceAmplitude)
+                .setMaxSpeed(maxGroundSpeed));
+        }
+
+        if (playerInput.axisInputs.x < 0)
+        {
+            Commands.Add(new MoveLeftCommand(rigidBody)
+                .setMoveForceAmplitude(moveForceAmplitude)
+                .setMaxSpeed(maxGroundSpeed));
+        }
+
+        if (!isJumping)
+        {
+            if (playerInput.jumpInput)
+            {
+                Commands.Add(new JumpCommand(rigidBody)
+                    .setJumpForceAmplitude(jumpForceAmplitude)); // TODO: add low, extended jumps with Dotween
+                isJumping = true;
+            }
+        }
+
+        foreach (var c in Commands)
+        {
+            c.execute();
+        }
     }
 
     private void CheckGround()
     {
-        RaycastHit2D hit = Physics2D.Raycast(groundChecker.position, Vector2.down, 0.05f);
+        RaycastHit2D hit = Physics2D.Raycast(groundChecker.position, Vector2.down, 0.05f, groundLayerMask);
         if (hit.collider != null)
         {
             isJumping = false;
@@ -104,32 +154,7 @@ public class PlayerController : MonoBehaviour
 
     private void HandleInput()
     {
-        Commands.Clear();
-
-        if (Input.GetAxisRaw(GameConstants.k_AxisNameHorizontal) > 0)
-        {
-            Commands.Add(new MoveRightCommand(rigidBody)
-                .setMoveForceAmplitude(moveForceAmplitude)
-                .setMaxSpeed(maxGroundSpeed));
-        }
-
-        if (Input.GetAxisRaw(GameConstants.k_AxisNameHorizontal) < 0)
-        {
-            Commands.Add(new MoveLeftCommand(rigidBody)
-                .setMoveForceAmplitude(moveForceAmplitude)
-                .setMaxSpeed(maxGroundSpeed));
-        }
-
-        if (Input.GetButton(GameConstants.k_ButtonNameJump) && !isJumping)
-        {
-            Commands.Add(new JumpCommand(rigidBody)
-                .setJumpForceAmplitude(jumpForceAmplitude));
-            isJumping = true;
-        }
-
-        foreach (var c in Commands) {
-            c.execute();
-        }
+        ControlsManager.instance.ProcessInput();
     }
     
     private enum Orientation
