@@ -27,8 +27,12 @@ public class MoveRightCommand : BaseCommand
     {
         Vector2 force = Vector2.right;
         force *= moveForceAmplitude;
-        //rb.velocity = force;
-        rb.AddForce(force, ForceMode2D.Force); // Force-based
+        
+        if (Mathf.Abs(rb.velocity.x) < maxSpeed)
+        {
+            rb.AddForce(force, ForceMode2D.Force); // Force-based
+        }
+
         float yVel = rb.velocity.y;
         rb.velocity.Set(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), yVel);
     }

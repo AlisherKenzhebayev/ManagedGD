@@ -922,10 +922,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68098f35683441b469b95aa3f0d60480, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveForceAmplitude: 800
-  maxGroundSpeed: 20
+  moveForceAmplitude: 2000
+  maxGroundSpeed: 10
+  dashForceAmplitude: 6000
+  maxDashSpeed: 20
   jumpForceAmplitude: 800
-  groundChecker: {fileID: 1002110638}
+  extendForceAmplitude: 80
+  jumpForceAmplifierCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.7375916
+      outSlope: -0.7375916
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.54230547
+      value: 0.6
+      inSlope: -0.12268934
+      outSlope: -0.12268934
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.0133294
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  jumpInputTimeWindow: 0.7
+  groundCheckerLength: 0.05
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 128
@@ -933,6 +970,7 @@ MonoBehaviour:
   - {fileID: 22100000, guid: c0c087cd70629ef4e9e7fbf00802159a, type: 2}
   - {fileID: 22100000, guid: b810f2280bb2a6b4cbf996716e6e3d55, type: 2}
   - {fileID: 22100000, guid: ff0baf1b9e6f6a743a79d1b967bdc731, type: 2}
+  initialAnimationOverride: 2
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
