@@ -8,6 +8,12 @@ public class ControlsManager : MonoBehaviour
     private static ControlsManager controlsManager;
     private static PlayerInput input;
 
+    [Header("Android Inputs")]
+    [SerializeField]
+    private FloatingJoystick m_FloatingJoystick;
+
+
+
     private ControlsManager() { }
 
     public static ControlsManager instance
@@ -166,6 +172,7 @@ public class ControlsManager : MonoBehaviour
 #else 
         Debug.LogWarning("ANDROID-Movement");
         // TODO: Write input processing for android, simplified.
+        input.axisInputs = m_FloatingJoystick.Direction;
 #endif
     }
 }

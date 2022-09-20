@@ -21,7 +21,6 @@ public class JumpCommand : BaseCommand
     {
         Vector2 force = Vector2.up;
         force *= jumpForceAmplitude;
-        //rb.velocity = force;
         rb.AddForce(force, ForceMode2D.Impulse); // Force-based
     }
 }

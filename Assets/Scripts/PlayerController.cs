@@ -149,7 +149,7 @@ public class PlayerController : MonoBehaviour
         {
             Move(playerInput.axisInputs);
         }
-
+    
         Jump(playerInput.jumpInput);
 
         // Execute the commands themselves
@@ -185,6 +185,10 @@ public class PlayerController : MonoBehaviour
             {
                 hasJumped = true;
                 hasLanded = false;
+
+                // Ensure the yvel is ok with 0 assignment
+                float xVel = rigidBody.velocity.x;
+                rigidBody.velocity = new Vector2(xVel, 0f);
 
                 Commands.Add(new JumpCommand(rigidBody)
                     .setJumpForceAmplitude(jumpForceAmplitude));
