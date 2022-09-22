@@ -2,6 +2,8 @@
 - UPD: 16 h spent
 - 2D lights using Laighter + URP pipeline
 
+*Images and Icons are DALL.E generated*
+
 ## Used assets
 1. Joystick Pack (Unity Asset Store) - https://assetstore.unity.com/packages/tools/input-management/joystick-pack-107631
 2. Parallax Scrolling Background (lic: CC0) https://opengameart.org/content/industrial-parallax-background

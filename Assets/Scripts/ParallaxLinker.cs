@@ -54,7 +54,9 @@ public class ParallaxLinker : MonoBehaviour
         foreach (ParallaxLink link in backgroundGoLinks) {
             if (link.linked.GetComponent<ParallaxBackground>() == null)
             {
+#if UNITY_EDITOR
                 Undo.RecordObject(link.linked, typeof(ParallaxBackground) + " was added to " + link.linked);
+#endif
                 ParallaxBackground t = link.linked.AddComponent<ParallaxBackground>();
                 ParallaxBackground p = link.background.GetComponent<ParallaxBackground>();
                 t.parallaxMulX = p.parallaxMulX;
@@ -64,7 +66,9 @@ public class ParallaxLinker : MonoBehaviour
                 ParallaxBackground t = link.linked.GetComponent<ParallaxBackground>();
                 ParallaxBackground p = link.background.GetComponent<ParallaxBackground>();
                 if (t.parallaxMulX != p.parallaxMulX || t.parallaxMulY != p.parallaxMulY) {
+#if UNITY_EDITOR
                     Undo.RecordObject(link.linked, typeof(ParallaxBackground) + " modified " + link.linked);
+#endif
                     t.parallaxMulX = p.parallaxMulX;
                     t.parallaxMulY = p.parallaxMulY;
                 }
@@ -72,7 +76,9 @@ public class ParallaxLinker : MonoBehaviour
 
             if (link.linked.GetComponent<SpriteRenderer>() == null)
             {
+#if UNITY_EDITOR
                 Undo.RecordObject(link.linked, typeof(SpriteRenderer) + " was added to " + link.linked);
+#endif
                 SpriteRenderer t = link.linked.AddComponent<SpriteRenderer>();
                 SpriteRenderer p = link.background.GetComponent<SpriteRenderer>();
                 t.sprite = p.sprite;
@@ -82,7 +88,9 @@ public class ParallaxLinker : MonoBehaviour
                 SpriteRenderer p = link.background.GetComponent<SpriteRenderer>();
                 if (t.sprite != p.sprite)
                 {
+#if UNITY_EDITOR
                     Undo.RecordObject(link.linked, typeof(SpriteRenderer) + " modified " + link.linked);
+#endif
                     t.sprite = p.sprite;
                 }
 
