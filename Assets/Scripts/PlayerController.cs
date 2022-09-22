@@ -164,14 +164,14 @@ public class PlayerController : MonoBehaviour
         if (playerInput.x < 0)
         {
             Commands.Add(new MoveLeftCommand(rigidBody)
-                .setMoveForceAmplitude(moveForceAmplitude)
+                .setMoveForceAmplitude(moveForceAmplitude * Mathf.Abs(playerInput.x))
                 .setMaxSpeed(maxGroundSpeed));
         }
 
         if (playerInput.x > 0)
         {
             Commands.Add(new MoveRightCommand(rigidBody)
-                .setMoveForceAmplitude(moveForceAmplitude)
+                .setMoveForceAmplitude(moveForceAmplitude * Mathf.Abs(playerInput.x))
                 .setMaxSpeed(maxGroundSpeed));
         }
     }
