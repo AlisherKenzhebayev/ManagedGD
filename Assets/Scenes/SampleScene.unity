@@ -369,7 +369,7 @@ Transform:
   m_GameObject: {fileID: 59726089}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: -0, z: 4}
-  m_LocalScale: {x: 0.65, y: 0.65, z: 0.65}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 804973259}
   m_RootOrder: 1
@@ -415,13 +415,13 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: -6
   m_Sprite: {fileID: 21300000, guid: fddc99e324540c142adc1b02892b1d8f, type: 3}
-  m_Color: {r: 0.6981132, g: 0.6981132, b: 0.6981132, a: 1}
+  m_Color: {r: 0.8773585, g: 0.8773585, b: 0.8773585, a: 0.5882353}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 60, y: 10}
+  m_Size: {x: 120, y: 8.875}
   m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 1
+  m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
@@ -437,7 +437,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e701b9a0722b27248aa027f39eb227e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parallaxEffectMultiplier: 0.35
+  parallaxMulX: 0.5
+  parallaxMulY: 0.5
+  scrolling: 1
 --- !u!1 &63854518
 GameObject:
   m_ObjectHideFlags: 3
@@ -1200,9 +1202,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 413192772}
-  - component: {fileID: 413192773}
   m_Layer: 0
-  m_Name: Level_Lights_Parent
+  m_Name: dyn_Level_Lights_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1230,19 +1231,54 @@ Transform:
   m_Father: {fileID: 311348108}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &413192773
+--- !u!1 &426309779
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 426309781}
+  - component: {fileID: 426309780}
+  m_Layer: 0
+  m_Name: ParallaxLinker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &426309780
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 413192771}
+  m_GameObject: {fileID: 426309779}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e701b9a0722b27248aa027f39eb227e8, type: 3}
+  m_Script: {fileID: 11500000, guid: 8cdad670a4ad6684d81afe355405b0ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parallaxEffectMultiplier: 0.2
+  backgroundGoLinks:
+  - background: {fileID: 1555392412}
+    linked: {fileID: 508998974}
+  - background: {fileID: 1123240517}
+    linked: {fileID: 413192771}
+--- !u!4 &426309781
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 426309779}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &508998974
 GameObject:
   m_ObjectHideFlags: 0
@@ -1253,9 +1289,8 @@ GameObject:
   m_Component:
   - component: {fileID: 508998975}
   - component: {fileID: 508998976}
-  - component: {fileID: 508998977}
   m_Layer: 0
-  m_Name: MOON
+  m_Name: dyn_MOON
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1317,19 +1352,6 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
---- !u!114 &508998977
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 508998974}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e701b9a0722b27248aa027f39eb227e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parallaxEffectMultiplier: 0.9
 --- !u!1 &516964029
 GameObject:
   m_ObjectHideFlags: 0
@@ -1674,7 +1696,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &652341911
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1692,9 +1714,9 @@ RectTransform:
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: -0.00012207031}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &652341912
 MonoBehaviour:
@@ -2021,7 +2043,7 @@ Transform:
   m_GameObject: {fileID: 982029971}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 4}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 804973259}
   m_RootOrder: 3
@@ -2038,7 +2060,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e701b9a0722b27248aa027f39eb227e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parallaxEffectMultiplier: 0.3
+  parallaxMulX: 0.3
+  parallaxMulY: 0.5
+  scrolling: 1
 --- !u!212 &982029974
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2084,7 +2108,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 60, y: 10}
+  m_Size: {x: 120, y: 10}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -2158,9 +2182,9 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: -600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1031552366
 MonoBehaviour:
@@ -2587,7 +2611,7 @@ Transform:
   m_GameObject: {fileID: 1123240517}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 4}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 804973259}
   m_RootOrder: 4
@@ -2637,7 +2661,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 60, y: 10}
+  m_Size: {x: 120, y: 6.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -2655,7 +2679,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e701b9a0722b27248aa027f39eb227e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parallaxEffectMultiplier: 0.2
+  parallaxMulX: 0.2
+  parallaxMulY: 0.5
+  scrolling: 1
 --- !u!1 &1149359529
 GameObject:
   m_ObjectHideFlags: 0
@@ -3039,7 +3065,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1335213659}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.4962817, y: -4.058175, z: -5.959909}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -3374,7 +3400,7 @@ Transform:
   m_GameObject: {fileID: 1468980345}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 4}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 804973259}
   m_RootOrder: 2
@@ -3424,7 +3450,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 60, y: 10}
+  m_Size: {x: 120, y: 9.375}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -3442,7 +3468,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e701b9a0722b27248aa027f39eb227e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parallaxEffectMultiplier: 0.3
+  parallaxMulX: 0.3
+  parallaxMulY: 0.5
+  scrolling: 1
 --- !u!1 &1555392412
 GameObject:
   m_ObjectHideFlags: 0
@@ -3455,7 +3483,7 @@ GameObject:
   - component: {fileID: 1555392414}
   - component: {fileID: 1555392415}
   m_Layer: 0
-  m_Name: 00_Backdrop_0.9
+  m_Name: 00_Backdrop_0.9_s
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3470,7 +3498,7 @@ Transform:
   m_GameObject: {fileID: 1555392412}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 5}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 804973259}
   m_RootOrder: 0
@@ -3520,9 +3548,9 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 1
   m_DrawMode: 2
-  m_Size: {x: 60, y: 10}
+  m_Size: {x: 120, y: 20}
   m_AdaptiveModeThreshold: 1
-  m_SpriteTileMode: 1
+  m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
@@ -3538,7 +3566,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e701b9a0722b27248aa027f39eb227e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parallaxEffectMultiplier: 0.9
+  parallaxMulX: 0.9
+  parallaxMulY: 0.5
+  scrolling: 1
 --- !u!1 &1601231795
 GameObject:
   m_ObjectHideFlags: 0
@@ -3712,8 +3742,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1809503537}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.85, z: 4}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_LocalPosition: {x: 0, y: 0.98, z: 4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 804973259}
   m_RootOrder: 5
@@ -3730,7 +3760,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e701b9a0722b27248aa027f39eb227e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parallaxEffectMultiplier: 0
+  parallaxMulX: 0
+  parallaxMulY: 0
+  scrolling: 1
 --- !u!212 &1809503540
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3776,7 +3808,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 60, y: 10}
+  m_Size: {x: 120, y: 9.375}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

@@ -37,7 +37,7 @@ public class ControlsManager : MonoBehaviour
 
     void Init()
     {
-        Debug.LogError("Init");
+        Debug.LogError("Init ControlsManager");
         input = new PlayerInput();
 
         ResetInput();
