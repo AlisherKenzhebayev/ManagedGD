@@ -12,8 +12,6 @@ public class ControlsManager : MonoBehaviour
     [SerializeField]
     private FloatingJoystick m_FloatingJoystick;
 
-
-
     private ControlsManager() { }
 
     public static ControlsManager instance

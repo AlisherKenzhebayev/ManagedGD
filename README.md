@@ -5,6 +5,7 @@
 ## Used assets
 1. Joystick Pack (Unity Asset Store) - https://assetstore.unity.com/packages/tools/input-management/joystick-pack-107631
 2. Parallax Scrolling Background (lic: CC0) https://opengameart.org/content/industrial-parallax-background
+3. XBox 50% Controller buttons (lic: CC0) https://opengameart.org/content/game-console-controller-buttons 
 
 ## Used Music/SFX
 1. https://opengameart.org/content/menu-music
