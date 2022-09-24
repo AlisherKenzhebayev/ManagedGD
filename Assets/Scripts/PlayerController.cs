@@ -158,57 +158,68 @@ public class PlayerController : MonoBehaviour
     {
         /// ---- STATE ANIMS ----
 
-        // Air animations
-        if (hasLanded)
-        {
-            animator.SetBool("Grounded", true);
-            animator.SetFloat("AirSpeed", m_RigidBody.velocity.y);
-            float velocityHor = Mathf.Abs(m_RigidBody.velocity.x);
-            // Idles and ground movement 
-            if (velocityHor <= EPS) {
-                // Standing, idle
-                animator.SetInteger("AnimState", 0);
-            } else if (velocityHor <= maxGroundSpeed) {
-                // Move
-                animator.SetInteger("AnimState", 2);
-            } else if (velocityHor > maxGroundSpeed) {
-                // Sprint
-                animator.SetInteger("AnimState", 3);
-            }
-        }
-        else {
-            animator.SetBool("Grounded", false);
-            animator.SetFloat("AirSpeed", m_RigidBody.velocity.y);
-        }
-
-        bool isInCombat = true;
-        // In-combat state
-        if (m_TimerSinceLastCombat > inCombatTimeWindow) {
-            isInCombat = false;
-        }
-        if (isInCombat) {
-            // Combat-Idle
-            animator.SetInteger("AnimState", 1);
-        }
-
         if (hasCrouched)
         {
             animator.SetInteger("AnimState", 4);
         }
-
-        /// ---- ACTIVE ANIMS ----
-
-        if (hasAttacked)
+        else
         {
-            animator.SetTrigger("Attack");
-        }
+            // Air animations
+            if (hasLanded)
+            {
+                animator.SetBool("Grounded", true);
+                animator.SetFloat("AirSpeed", m_RigidBody.velocity.y);
+                float velocityHor = Mathf.Abs(m_RigidBody.velocity.x);
+                // Idles and ground movement 
+                if (velocityHor <= EPS)
+                {
+                    // Standing, idle
+                    animator.SetInteger("AnimState", 0);
+                }
+                else if (velocityHor <= maxGroundSpeed)
+                {
+                    // Move
+                    animator.SetInteger("AnimState", 2);
+                }
+                else if (velocityHor > maxGroundSpeed)
+                {
+                    // Sprint
+                    animator.SetInteger("AnimState", 3);
+                }
+            }
+            else
+            {
+                animator.SetBool("Grounded", false);
+                animator.SetFloat("AirSpeed", m_RigidBody.velocity.y);
+            }
 
-        if (hasWallAttached)
-        {
-            animator.SetBool("Attached", true);
-        }
-        else {
-            animator.SetBool("Attached", false);
+            bool isInCombat = true;
+            // In-combat state
+            if (m_TimerSinceLastCombat > inCombatTimeWindow)
+            {
+                isInCombat = false;
+            }
+            if (isInCombat)
+            {
+                // Combat-Idle
+                animator.SetInteger("AnimState", 1);
+            }
+
+            /// ---- ACTIVE ANIMS ----
+
+            if (hasAttacked)
+            {
+                animator.SetTrigger("Attack");
+            }
+
+            if (hasWallAttached)
+            {
+                animator.SetBool("Attached", true);
+            }
+            else
+            {
+                animator.SetBool("Attached", false);
+            }
         }
     }
 
@@ -226,14 +237,41 @@ public class PlayerController : MonoBehaviour
 
     private void CrouchInputUpdate(bool crouchInput)
     {
+        // If already crouched, process until the player can stand up
+        if (hasCrouched) {
+            StartCoroutine(SlideCoroutine());
+            IEnumerator SlideCoroutine()
+            {
+                SetCrouch(true);
+                yield return new WaitForSeconds(.5f);
+                yield return new WaitUntil(() => !crouchInput && !CheckUpperContact());
+                yield return new WaitForSeconds(.05f);
+                SetCrouch(false);
+            }
+
+            void SetCrouch(bool crouch)
+            {
+                //0.33 0.6
+                Vector2 offset = new Vector2(0.0f, 0.65f);
+                Vector2 size = new Vector2(0.6f, 1.16f);
+
+                hasCrouched = crouch;
+                m_Collider.offset = crouch ? new Vector2(0.0f, 0.33f) : offset;
+                m_Collider.size = crouch ? new Vector2(0.6f, 0.6f) : size;
+            }
+            return;
+        }
+
         if (crouchInput)
         {
             if (!hasWallAttached && hasLanded)
             {
+
                 hasCrouched = true;
                 return;
             }
         }
+
         hasCrouched = false;
     }
 
@@ -281,7 +319,7 @@ public class PlayerController : MonoBehaviour
         Commands.Clear();
         if (playerInput.axisInputs.x != 0)
         {
-            if (playerInput.sprintInput) {
+            if (playerInput.sprintInput && !hasCrouched) {
                 Sprint(playerInput.axisInputs);
             }
             else
@@ -289,8 +327,11 @@ public class PlayerController : MonoBehaviour
                 Move(playerInput.axisInputs);
             }
         }
-    
-        Jump(playerInput.jumpInput);
+
+        if (!hasCrouched)
+        {
+            Jump(playerInput.jumpInput);
+        }
 
         // Execute the commands themselves
         foreach (var c in Commands)

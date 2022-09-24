@@ -1486,7 +1486,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 384
   m_Collider: {fileID: 1194342530}
-  aboveCheckerLength: 0.05
+  aboveCheckerLength: 0.5
   wallCheckerLength: 0.1
   checksLayerMask:
     serializedVersion: 2
