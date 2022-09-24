@@ -44,6 +44,23 @@ public class PlayerController : MonoBehaviour
     [Tooltip("Ground RayCast mask")]
     private LayerMask groundLayerMask;
 
+    [Header("Collision checks")]
+    [SerializeField()]
+    [Tooltip("Player collider")]
+    private CapsuleCollider2D m_Collider;
+    [SerializeField()]
+    [Tooltip("Length of the RayCast for slide check (above)")]
+    private float aboveCheckerLength = 0.07f;
+    [SerializeField()]
+    [Tooltip("Length of the RayCast for wall")]
+    private float wallCheckerLength = 0.1f;
+    [SerializeField()]
+    [Tooltip("Checks RayCast mask")]
+    private LayerMask checksLayerMask;
+    [SerializeField()]
+    [Tooltip("gravity alternative wall")]
+    private float gravityValueWall;
+
     [Header("Animation controls")]
     [SerializeField()]
     [Tooltip("Array, multiple animation states")]
@@ -54,6 +71,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField()]
     [Tooltip("Animator")]
     private Animator animator;
+    [SerializeField()]
+    [Tooltip("In-Combat Window (s)")]
+    private float inCombatTimeWindow = 2.0f;
 
     // PRIVATE
 
@@ -63,26 +83,35 @@ public class PlayerController : MonoBehaviour
     // False -  jump was not started / has ended.
     // True -   jump was started, no input commands interrupted
     private bool hasJumped = false;
-    
+
     // Indicates the ground status.
-    private bool hasLanded = false; 
-    
+    private bool hasLanded = false;
+
+    // Attachedness to the wall
+    private bool hasWallAttached = false;
+
+    private bool hasAttacked = false;
+    private bool hasCrouched = false;
+
+    private float m_savedDefaultGravity;
     private Orientation orientation = Orientation.RightFacing;
-    private Rigidbody2D rigidBody;
-    private SpriteRenderer spriteRenderer;
+    private Rigidbody2D m_RigidBody;
+    private SpriteRenderer m_SpriteRenderer;
     private HashSet<ICommand> Commands;
     private Animator m_Animator;
     private int m_CurrentAnimOverride;
     private float m_TimerSinceJumpStarted = float.MaxValue;
+    private float m_TimerSinceLastCombat = float.MaxValue;
 
     void Start() {
-        rigidBody = this.GetComponent<Rigidbody2D>();
-        if (rigidBody == null)
+        m_RigidBody = this.GetComponent<Rigidbody2D>();
+        if (m_RigidBody == null)
         {
             Debug.LogError("No Rigidbody2D component found!");
         }
-        spriteRenderer = this.GetComponentInChildren<SpriteRenderer>();
-        if(spriteRenderer == null) 
+        m_savedDefaultGravity = m_RigidBody.gravityScale;
+        m_SpriteRenderer = this.GetComponentInChildren<SpriteRenderer>();
+        if(m_SpriteRenderer == null) 
         {
             Debug.LogError("No SpriteRenderer component found!");
         }
@@ -106,17 +135,20 @@ public class PlayerController : MonoBehaviour
         RotatePlayerRenderer();
         HandleInput();
 
-        InputState();
+        CheckForwardContact();
+
+        InputStateUpdate();
         AnimationState();
 
         TimerUpdates();
 
-        Debug.Log("Horizontal Velocity - " + Mathf.Abs(rigidBody.velocity.x));
+        Debug.Log("Horizontal Velocity - " + Mathf.Abs(m_RigidBody.velocity.x));
     }
 
     private void TimerUpdates()
     {
         m_TimerSinceJumpStarted += Time.deltaTime;
+        m_TimerSinceLastCombat += Time.deltaTime;
     }
 
     /// <summary>
@@ -124,47 +156,119 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void AnimationState()
     {
-        PlayerInput playerInput = ControlsManager.instance.GetInput();
-        if (playerInput.actionInput)
-        {
-            animator.SetTrigger("Attack");
-        }
-        if (playerInput.crouchInput)
-        {
-            animator.SetTrigger("Crouch");
-        }
+        /// ---- STATE ANIMS ----
+
+        // Air animations
         if (hasLanded)
         {
             animator.SetBool("Grounded", true);
-            animator.SetFloat("AirSpeed", rigidBody.velocity.y);
+            animator.SetFloat("AirSpeed", m_RigidBody.velocity.y);
+            float velocityHor = Mathf.Abs(m_RigidBody.velocity.x);
             // Idles and ground movement 
-            if (Mathf.Abs(rigidBody.velocity.x) <= EPS) {
+            if (velocityHor <= EPS) {
+                // Standing, idle
                 animator.SetInteger("AnimState", 0);
-            } else if (rigidBody.velocity.x <= maxGroundSpeed) {
+            } else if (velocityHor <= maxGroundSpeed) {
+                // Move
                 animator.SetInteger("AnimState", 2);
-            } else if (rigidBody.velocity.x > maxGroundSpeed) {
+            } else if (velocityHor > maxGroundSpeed) {
+                // Sprint
                 animator.SetInteger("AnimState", 3);
             }
         }
         else {
             animator.SetBool("Grounded", false);
-            animator.SetFloat("AirSpeed", rigidBody.velocity.y);
+            animator.SetFloat("AirSpeed", m_RigidBody.velocity.y);
+        }
+
+        bool isInCombat = true;
+        // In-combat state
+        if (m_TimerSinceLastCombat > inCombatTimeWindow) {
+            isInCombat = false;
+        }
+        if (isInCombat) {
+            // Combat-Idle
+            animator.SetInteger("AnimState", 1);
+        }
+
+        if (hasCrouched)
+        {
+            animator.SetInteger("AnimState", 4);
+        }
+
+        /// ---- ACTIVE ANIMS ----
+
+        if (hasAttacked)
+        {
+            animator.SetTrigger("Attack");
+        }
+
+        if (hasWallAttached)
+        {
+            animator.SetBool("Attached", true);
+        }
+        else {
+            animator.SetBool("Attached", false);
         }
     }
 
     /// <summary>
-    /// All logic that is responsible for controlling the states ON/OFF
+    /// All logic that is responsible for controlling the states ON/OFF, with no regard to physics, i.e. animation variables
     /// </summary>
-    private void InputState()
+    private void InputStateUpdate()
     {
+        PlayerInput playerInput = ControlsManager.instance.GetInput();
 
+        ActionInputUpdate(playerInput.actionInput);
+
+        CrouchInputUpdate(playerInput.crouchInput);
+    }
+
+    private void CrouchInputUpdate(bool crouchInput)
+    {
+        if (crouchInput)
+        {
+            if (!hasWallAttached && hasLanded)
+            {
+                hasCrouched = true;
+                return;
+            }
+        }
+        hasCrouched = false;
+    }
+
+    private void ActionInputUpdate(bool actionInput)
+    {
+        if (actionInput)
+        {
+            // Is on ground, can attack
+            if (!hasWallAttached && !hasCrouched && hasLanded)
+            {
+                hasAttacked = true;
+                m_TimerSinceLastCombat = 0.0f;
+                return;
+            }
+        }
+        hasAttacked = false;    
     }
 
     private void FixedUpdate()
     {
         CheckGround();
 
+        AlterGravity();
+
         IssueCommandPhysics();
+    }
+
+    private void AlterGravity()
+    {
+        if (hasWallAttached)
+        {
+            m_RigidBody.gravityScale = gravityValueWall;
+        } else {
+            m_RigidBody.gravityScale = m_savedDefaultGravity;
+        }
     }
 
     /// <summary>
@@ -177,7 +281,13 @@ public class PlayerController : MonoBehaviour
         Commands.Clear();
         if (playerInput.axisInputs.x != 0)
         {
-            Move(playerInput.axisInputs);
+            if (playerInput.sprintInput) {
+                Sprint(playerInput.axisInputs);
+            }
+            else
+            {
+                Move(playerInput.axisInputs);
+            }
         }
     
         Jump(playerInput.jumpInput);
@@ -193,23 +303,53 @@ public class PlayerController : MonoBehaviour
     {
         if (playerInput.x < 0)
         {
-            Commands.Add(new MoveLeftCommand(rigidBody)
+            Commands.Add(new MoveLeftCommand(m_RigidBody)
                 .setMoveForceAmplitude(moveForceAmplitude * Mathf.Abs(playerInput.x))
                 .setMaxSpeed(maxGroundSpeed));
         }
 
         if (playerInput.x > 0)
         {
-            Commands.Add(new MoveRightCommand(rigidBody)
+            Commands.Add(new MoveRightCommand(m_RigidBody)
                 .setMoveForceAmplitude(moveForceAmplitude * Mathf.Abs(playerInput.x))
                 .setMaxSpeed(maxGroundSpeed));
         }
     }
 
+    private void Sprint(Vector2 playerInput)
+    {
+        if (playerInput.x < 0)
+        {
+            Commands.Add(new MoveLeftCommand(m_RigidBody)
+                .setMoveForceAmplitude(dashForceAmplitude * Mathf.Abs(playerInput.x))
+                .setMaxSpeed(maxDashSpeed));
+        }
+
+        if (playerInput.x > 0)
+        {
+            Commands.Add(new MoveRightCommand(m_RigidBody)
+                .setMoveForceAmplitude(dashForceAmplitude * Mathf.Abs(playerInput.x))
+                .setMaxSpeed(maxDashSpeed));
+        }
+    }
+
+
     private void Jump(bool jumpInput)
     {
         if (jumpInput)
         {
+            if (CheckUpperContact())
+            {
+                // If there's something right above, can't jump
+                return;
+            }
+
+            if (CheckForwardContact())
+            {
+                // If there's something in front (wall), can't jump
+                return;
+            }
+
             // Has not jumped yet, stands on ground
             if (hasLanded)
             {
@@ -217,10 +357,10 @@ public class PlayerController : MonoBehaviour
                 hasLanded = false;
 
                 // Ensure the yvel is ok with 0 assignment
-                float xVel = rigidBody.velocity.x;
-                rigidBody.velocity = new Vector2(xVel, 0f);
+                float xVel = m_RigidBody.velocity.x;
+                m_RigidBody.velocity = new Vector2(xVel, 0f);
 
-                Commands.Add(new JumpCommand(rigidBody)
+                Commands.Add(new JumpCommand(m_RigidBody)
                     .setJumpForceAmplitude(jumpForceAmplitude));
                 m_TimerSinceJumpStarted = 0.0f;
                 return;
@@ -240,12 +380,11 @@ public class PlayerController : MonoBehaviour
                 float jumpAmplifier = jumpForceAmplifierCurve.Evaluate(sampleTime);
 
                 // Apply the smaller force
-                Commands.Add(new JumpCommand(rigidBody)
+                Commands.Add(new JumpCommand(m_RigidBody)
                     .setJumpForceAmplitude(extendForceAmplitude * jumpAmplifier));
                 return;
             }
-        }
-        else {
+        } else {
             if (hasJumped) {
                 // Jump was interrupted
                 hasJumped = false;
@@ -257,9 +396,24 @@ public class PlayerController : MonoBehaviour
     private void OnDrawGizmos()
     {
         // Draw the ray for ground checks
-        Gizmos.color = Color.green;
-        Vector2 direction = Vector2.down * groundCheckerLength;
-        Gizmos.DrawRay(this.transform.position, direction);
+        Vector2 pos2D = m_Collider.offset - new Vector2(0.0f, m_Collider.size.y * .5f);
+        Gizmos.color = hasLanded ? Color.yellow : Color.red; 
+        Gizmos.DrawRay(transform.position + new Vector3(pos2D.x, pos2D.y, 0.0f), Vector2.down * groundCheckerLength);
+
+        //Upper Contact Check
+        pos2D = m_Collider.offset + new Vector2(0.0f, m_Collider.size.y * .5f);
+        Gizmos.color = CheckUpperContact() ? Color.yellow : Color.red;
+        Gizmos.DrawRay(transform.position + new Vector3(pos2D.x, pos2D.y, 0.0f), Vector3.up * aboveCheckerLength);
+
+        //Forward Contact Check
+        if (orientation == Orientation.RightFacing)
+        {
+            pos2D = m_Collider.offset + new Vector2(m_Collider.size.x * .5f, 0.0f);
+        } else {
+            pos2D = m_Collider.offset - new Vector2(m_Collider.size.x * .5f, 0.0f);
+        }
+        Gizmos.color = CheckForwardContact() ? Color.yellow : Color.green;
+        Gizmos.DrawRay(transform.position + new Vector3(pos2D.x, pos2D.y, 0.0f), m_Collider.transform.right * wallCheckerLength);
     }
 
     private void SetAnimationOverride(AnimatorOverrideController overrideController)
@@ -270,7 +424,8 @@ public class PlayerController : MonoBehaviour
 
     private void CheckGround()
     {
-        RaycastHit2D hit = Physics2D.Raycast(this.transform.position, Vector2.down, groundCheckerLength, groundLayerMask);
+        Vector2 pos2D = m_Collider.offset - new Vector2(0.0f, m_Collider.size.y * .5f);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position + new Vector3(pos2D.x, pos2D.y, 0.0f), Vector2.down, groundCheckerLength, groundLayerMask);
         if (hit.collider != null)
         {
             hasLanded = true;
@@ -280,23 +435,55 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    bool CheckUpperContact()
+    {
+        Vector2 pos2D = m_Collider.offset + new Vector2(0.0f, m_Collider.size.y * .5f);
+        RaycastHit2D hit = (Physics2D.Raycast(transform.position + new Vector3(pos2D.x, pos2D.y, 0.0f), Vector3.up, aboveCheckerLength, checksLayerMask));
+        return hit;
+    }
+
+    bool CheckForwardContact()
+    {
+        Vector2 pos2D;
+        if (orientation == Orientation.RightFacing)
+        {
+            pos2D = m_Collider.offset + new Vector2(m_Collider.size.x * .5f, 0.0f);
+        }
+        else
+        {
+            pos2D = m_Collider.offset - new Vector2(m_Collider.size.x * .5f, 0.0f);
+        }
+        RaycastHit2D hit = (Physics2D.Raycast(transform.position + new Vector3(pos2D.x, pos2D.y, 0.0f), m_Collider.transform.right, wallCheckerLength, checksLayerMask));
+
+        if (hit.collider != null)
+        {
+            // Hit something filtered
+            hasWallAttached = true;
+        } else {
+            hasWallAttached = false;
+        }
+
+        return hit;
+    }
+
     /// <summary>
-    /// Rotates the renderer for doubling the number of animations, based on the current horizontal speed
+    /// Rotates the renderer for doubling the number of animations, based on the current inputs
     /// </summary>
     private void RotatePlayerRenderer()
     {
-        float velocity = rigidBody.velocity.x;
-
-        if (Mathf.Abs(velocity) <= EPS) {
+        PlayerInput playerInput = ControlsManager.instance.GetInput();
+        
+        if (Mathf.Abs(playerInput.axisInputs.x) <= EPS) {
             return;
         }
 
-        if (velocity > 0)
+        if (playerInput.axisInputs.x > 0)
         {
             if (orientation == Orientation.LeftFacing)
             {
                 orientation = Orientation.RightFacing;
-                spriteRenderer.transform.Rotate(new Vector3(0f, 180f, 0f), Space.Self);
+                m_SpriteRenderer.transform.Rotate(new Vector3(0f, 180f, 0f), Space.Self);
+                m_Collider.transform.Rotate(new Vector3(0f, 180f, 0f), Space.Self);
             }
         }
         else
@@ -304,7 +491,8 @@ public class PlayerController : MonoBehaviour
             if (orientation == Orientation.RightFacing)
             {
                 orientation = Orientation.LeftFacing;
-                spriteRenderer.transform.Rotate(new Vector3(0f, 180f, 0f), Space.Self);
+                m_SpriteRenderer.transform.Rotate(new Vector3(0f, 180f, 0f), Space.Self);
+                m_Collider.transform.Rotate(new Vector3(0f, 180f, 0f), Space.Self);
             }
         }
     }

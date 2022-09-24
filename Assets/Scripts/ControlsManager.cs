@@ -76,10 +76,10 @@ public class ControlsManager : MonoBehaviour
     {
         input.crouchInput = false;
 
-#if UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
         Debug.LogWarning("WINDOWS-Crouch");
         // Input methods for the Win platform
-        if (Input.GetButton(GameConstants.k_ButtonNameJump))
+        if (Input.GetButton(GameConstants.k_ButtonNameCrouch))
         {
             input.crouchInput = true;
         }
@@ -103,10 +103,10 @@ public class ControlsManager : MonoBehaviour
     {
         input.sprintInput = false;
 
-#if UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
         Debug.LogWarning("WINDOWS-Sprint");
         // Input methods for the Win platform
-        if (Input.GetButton(GameConstants.k_ButtonNameJump))
+        if (Input.GetButton(GameConstants.k_ButtonNameSprint))
         {
             input.sprintInput = true;
         }
@@ -136,7 +136,7 @@ public class ControlsManager : MonoBehaviour
     {
         input.jumpInput = false;
 
-#if UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
         Debug.LogWarning("WINDOWS-Jump");
         // Input methods for the Win platform
         if (Input.GetButton(GameConstants.k_ButtonNameJump))
@@ -164,7 +164,7 @@ public class ControlsManager : MonoBehaviour
     {
         input.actionInput = false;
 
-#if UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
         Debug.LogWarning("WINDOWS-Action");
         // Input methods for the Win platform
         if (Input.GetButton(GameConstants.k_ButtonNameAction))
@@ -191,7 +191,7 @@ public class ControlsManager : MonoBehaviour
     {
         input.axisInputs = Vector2.zero;
 
-#if UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
         Debug.LogWarning("WINDOWS-Movement");
         // Input methods for the Win platform
         if (Input.GetAxisRaw(GameConstants.k_AxisNameHorizontal) > 0)
