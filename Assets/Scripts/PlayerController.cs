@@ -6,6 +6,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
+    const float EPS = 0.005f;
+
     // SETTINGS
 
     [Header("Modifiable values")]
@@ -49,6 +51,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField()]
     [Tooltip("Initial state for the animation controller")]
     private int initialAnimationOverride = 0;
+    [SerializeField()]
+    [Tooltip("Animator")]
+    private Animator animator;
 
     // PRIVATE
 
@@ -118,8 +123,33 @@ public class PlayerController : MonoBehaviour
     /// All logic that is responsible for animation switching
     /// </summary>
     private void AnimationState()
-    { 
-
+    {
+        PlayerInput playerInput = ControlsManager.instance.GetInput();
+        if (playerInput.actionInput)
+        {
+            animator.SetTrigger("Attack");
+        }
+        if (playerInput.crouchInput)
+        {
+            animator.SetTrigger("Crouch");
+        }
+        if (hasLanded)
+        {
+            animator.SetBool("Grounded", true);
+            animator.SetFloat("AirSpeed", rigidBody.velocity.y);
+            // Idles and ground movement 
+            if (Mathf.Abs(rigidBody.velocity.x) <= EPS) {
+                animator.SetInteger("AnimState", 0);
+            } else if (rigidBody.velocity.x <= maxGroundSpeed) {
+                animator.SetInteger("AnimState", 2);
+            } else if (rigidBody.velocity.x > maxGroundSpeed) {
+                animator.SetInteger("AnimState", 3);
+            }
+        }
+        else {
+            animator.SetBool("Grounded", false);
+            animator.SetFloat("AirSpeed", rigidBody.velocity.y);
+        }
     }
 
     /// <summary>
@@ -257,7 +287,7 @@ public class PlayerController : MonoBehaviour
     {
         float velocity = rigidBody.velocity.x;
 
-        if (Mathf.Abs(velocity) <= 0.005f) {
+        if (Mathf.Abs(velocity) <= EPS) {
             return;
         }
 

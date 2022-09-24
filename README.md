@@ -26,7 +26,7 @@
 	- DONE: Linking of background scrolling with other game objects, to simulate attachedness (lights, moon as examples)
 		+ Pros: Background scroll linking with other objects, does remove the necessity to copy data every time.
 4. Which topic is covered extensively enough [R7]
-	- 2D
+	- 2D game in general (+Sprites, +Tilemaps, +Spritesheet animations, +some tweening)
 5. Which additional requirements are met [A1 - A9]
 	- A3 - Particle Effects - TODO:
 	- A7 - URP 2D lights - DONE (background, sprites, player)

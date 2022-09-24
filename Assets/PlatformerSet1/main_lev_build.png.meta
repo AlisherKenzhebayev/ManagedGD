@@ -629,6 +629,30 @@ TextureImporter:
   - first:
       213: 2644361266644883589
     second: main_lev_build_208
+  - first:
+      213: -8175008150708653077
+    second: main_lev_build_209
+  - first:
+      213: -5947325822755589475
+    second: main_lev_build_210
+  - first:
+      213: -2717993293863695617
+    second: main_lev_build_211
+  - first:
+      213: 6331166709418807040
+    second: main_lev_build_212
+  - first:
+      213: -383481685464765812
+    second: main_lev_build_213
+  - first:
+      213: 184104226181331583
+    second: main_lev_build_214
+  - first:
+      213: -8873469936768711216
+    second: main_lev_build_215
+  - first:
+      213: -3031442082873966828
+    second: main_lev_build_216
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -875,8 +899,8 @@ TextureImporter:
         y: 1200
         width: 32
         height: 32
-      alignment: 2
-      pivot: {x: 0.5, y: 1}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1063,12 +1087,16 @@ TextureImporter:
         x: 704
         y: 1200
         width: 32
-        height: 16
-      alignment: 2
-      pivot: {x: 0.5, y: 1}
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: -16, y: -16}
+        - {x: 16, y: -16}
+        - {x: 16, y: 0}
+        - {x: -16, y: 0}
       tessellationDetail: 0
       bones: []
       spriteID: e1ed534d895475360800000000000000
@@ -1082,14 +1110,18 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 944
-        y: 1200
+        y: 1184
         width: 32
-        height: 16
-      alignment: 2
-      pivot: {x: 0.5, y: 1}
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: -16, y: 16}
+        - {x: -16, y: 0}
+        - {x: 16, y: 0}
+        - {x: 16, y: 16}
       tessellationDetail: 0
       bones: []
       spriteID: bab9dbe93ad65a8b0800000000000000
@@ -1610,11 +1642,15 @@ TextureImporter:
         y: 1104
         width: 32
         height: 32
-      alignment: 2
-      pivot: {x: 0.5, y: 1}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: -16, y: 16}
+        - {x: -16, y: -16}
+        - {x: 16, y: -16}
+        - {x: 16, y: 16}
       tessellationDetail: 0
       bones: []
       spriteID: 9ee645affeac8dd00800000000000000
@@ -1672,9 +1708,9 @@ TextureImporter:
         x: 144
         y: 976
         width: 32
-        height: 128
-      alignment: 2
-      pivot: {x: 0.5, y: 1}
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1693,9 +1729,9 @@ TextureImporter:
         x: 496
         y: 976
         width: 32
-        height: 128
-      alignment: 2
-      pivot: {x: 0.5, y: 1}
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1778,8 +1814,8 @@ TextureImporter:
         y: 1072
         width: 32
         height: 16
-      alignment: 2
-      pivot: {x: 0.5, y: 1}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1984,15 +2020,19 @@ TextureImporter:
       name: main_lev_build_59
       rect:
         serializedVersion: 2
-        x: 1472
+        x: 1504
         y: 1024
-        width: 96
-        height: 16
-      alignment: 2
-      pivot: {x: 0.5, y: 1}
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: -16, y: -16}
+        - {x: 16, y: -16}
+        - {x: 16, y: 0}
+        - {x: -16, y: 0}
       tessellationDetail: 0
       bones: []
       spriteID: bb32e62cf258e7990800000000000000
@@ -2051,8 +2091,8 @@ TextureImporter:
         y: 976
         width: 32
         height: 32
-      alignment: 2
-      pivot: {x: 0.5, y: 1}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2111,14 +2151,18 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 96
-        y: 928
+        y: 960
         width: 32
-        height: 47
-      alignment: 2
-      pivot: {x: 0.5, y: 1}
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: -16, y: -16}
+        - {x: -16, y: -16}
+        - {x: 16, y: -16}
+        - {x: 16, y: 0}
       tessellationDetail: 0
       bones: []
       spriteID: 00e4a1f1167100030800000000000000
@@ -2239,12 +2283,15 @@ TextureImporter:
         x: 544
         y: 928
         width: 32
-        height: 47
-      alignment: 2
-      pivot: {x: 0.5, y: 1}
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: -16, y: 16}
+        - {x: 16, y: 1}
+        - {x: 16, y: 16}
       tessellationDetail: 0
       bones: []
       spriteID: e29f91797a0bcbb10800000000000000
@@ -5084,6 +5131,230 @@ TextureImporter:
       bones: []
       spriteID: 56a62781b0fd32360800000000000000
       internalID: 7143798672687524453
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: main_lev_build_207
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 928
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -16, y: 16}
+        - {x: -16, y: 0}
+        - {x: 16, y: 16}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 040501806c920ba70800000000000000
+      internalID: 8840611999043833920
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: main_lev_build_208
+      rect:
+        serializedVersion: 2
+        x: 496
+        y: 1008
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5889b24cf88a2b420800000000000000
+      internalID: 2644361266644883589
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: main_lev_build_209
+      rect:
+        serializedVersion: 2
+        x: 496
+        y: 1040
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: be3761566698c8e80800000000000000
+      internalID: -8175008150708653077
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: main_lev_build_210
+      rect:
+        serializedVersion: 2
+        x: 496
+        y: 1072
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d92352bacaad67da0800000000000000
+      internalID: -5947325822755589475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: main_lev_build_211
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 1008
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ffa4c51ff7fb74ad0800000000000000
+      internalID: -2717993293863695617
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: main_lev_build_212
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 1040
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 00fcfa80492dcd750800000000000000
+      internalID: 6331166709418807040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: main_lev_build_213
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 1072
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c8a210850799daaf0800000000000000
+      internalID: -383481685464765812
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: main_lev_build_214
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 945
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -16, y: -2}
+        - {x: -16, y: -16}
+        - {x: 16, y: 0}
+        - {x: 16, y: 15}
+      tessellationDetail: 0
+      bones: []
+      spriteID: f7abf2b71d11e8200800000000000000
+      internalID: 184104226181331583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: main_lev_build_215
+      rect:
+        serializedVersion: 2
+        x: 544
+        y: 944
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -16, y: 15}
+        - {x: -16, y: 0}
+        - {x: 16, y: -15}
+        - {x: 16, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0d50bcd2b1a1bd480800000000000000
+      internalID: -8873469936768711216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: main_lev_build_216
+      rect:
+        serializedVersion: 2
+        x: 544
+        y: 960
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -16, y: 0}
+        - {x: -16, y: -16}
+        - {x: 16, y: -16}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 41f7025ac772ee5d0800000000000000
+      internalID: -3031442082873966828
       vertices: []
       indices: 
       edges: []

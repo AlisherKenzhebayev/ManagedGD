@@ -11,6 +11,10 @@ public class ControlsManager : MonoBehaviour
     [Header("Android Inputs")]
     [SerializeField]
     private FloatingJoystick m_FloatingJoystick;
+    private bool m_isButtonPressingJump = false;
+    private bool m_isButtonPressingAction = false;
+    private bool m_isButtonPressingCrouch = false;
+    private bool m_isButtonPressingSprint = false; // = Dash
 
     private ControlsManager() { }
 
@@ -80,9 +84,19 @@ public class ControlsManager : MonoBehaviour
             input.crouchInput = true;
         }
 #else 
+        // Input processing for android, simplified.
         Debug.LogWarning("ANDROID-Crouch");
-        // TODO: Write input processing for android, simplified.
+        input.crouchInput = m_isButtonPressingCrouch;
 #endif
+    }
+
+    public void CrouchPointerDown() {
+        m_isButtonPressingCrouch = true;
+    }
+
+    public void CrouchPointerUp()
+    {
+        m_isButtonPressingCrouch = false;
     }
 
     private void ProcessSprint()
@@ -97,9 +111,20 @@ public class ControlsManager : MonoBehaviour
             input.sprintInput = true;
         }
 #else 
+        // Input processing for android, simplified.
         Debug.LogWarning("ANDROID-Sprint");
-        // TODO: Write input processing for android, simplified.
+        input.sprintInput = m_isButtonPressingSprint;
 #endif
+    }
+
+    public void SprintPointerDown()
+    {
+        m_isButtonPressingSprint = true;
+    }
+
+    public void SprintPointerUp()
+    {
+        m_isButtonPressingSprint = false;
     }
 
     public PlayerInput GetInput()
@@ -119,9 +144,20 @@ public class ControlsManager : MonoBehaviour
             input.jumpInput = true;
         }
 #else 
+        // Input processing for android, simplified.
         Debug.LogWarning("ANDROID-Jump");
-        // TODO: Write input processing for android, simplified.
+        input.jumpInput = m_isButtonPressingJump;
 #endif
+    }
+
+    public void JumpPointerDown()
+    {
+        m_isButtonPressingJump = true;
+    }
+
+    public void JumpPointerUp()
+    {
+        m_isButtonPressingJump = false;
     }
 
     private void ProcessAction()
@@ -135,10 +171,20 @@ public class ControlsManager : MonoBehaviour
         {
             input.actionInput = true;
         }
-#else 
+#else
+        // Input processing for android, simplified.
         Debug.LogWarning("ANDROID-Action");
-        // TODO: Write input processing for android, simplified.
+        input.actionInput = m_isButtonPressingAction;
 #endif
+    }
+    public void ActionPointerDown()
+    {
+        m_isButtonPressingAction = true;
+    }
+
+    public void ActionPointerUp()
+    {
+        m_isButtonPressingAction = false;
     }
 
     private void ProcessMovement()
