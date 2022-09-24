@@ -22,16 +22,15 @@
 2. Plugins used [R5] 
 	- Cinemachine (Player camera follow, slight delay)
 3. What have you done for [R6] (Editor Extensions)
-	- TODO: Patrolling of obstacles (linked with DoTween)
 	- DONE: Linking of background scrolling with other game objects, to simulate attachedness (lights, moon as examples)
 		+ Pros: Background scroll linking with other objects, does remove the necessity to copy data every time.
 4. Which topic is covered extensively enough [R7]
 	- 2D game in general (+Sprites, +Tilemaps, +Spritesheet animations, +some tweening)
 5. Which additional requirements are met [A1 - A9] ( at least 2 )
-	- A3 - Particle Effects - TODO:
+	- A3 - Particle Effects - Used on 'cursed' objects
 	- A7 - URP 2D lights - DONE (background, sprites, player)
 6. Summarize what your game is about
-	- Seeking the exit from the level, while trying not to die. 
+	- You are the only person in the distant lands who is able to seek and destroy curses. This task for some reason ended up being more challenging this time. Will you be able to destroy the curses, or will the curse consume you in the end? 
 7. What did you enjoy the most
 	- Lectures were interesting to hear about for a beginner
 8. What was your biggest struggle (I will try to improve my lectures according to that next year)

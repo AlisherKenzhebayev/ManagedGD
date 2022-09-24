@@ -15,8 +15,8 @@ TagManager:
   - LevelCollision
   - LevelPTCollision
   - 
-  - 
-  - 
+  - Hitbox
+  - Hurtbox
   - 
   - 
   - 

@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8351078060726517198
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8351078060726517192}
+  - component: {fileID: 8351078060726517199}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8351078060726517192
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8351078060726517198}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8351078060726517199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8351078060726517198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21e69a3cc67b93c498ef09b0f07e260c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: BGM
+    clip: {fileID: 8300000, guid: 88d8c5e12bf10f44c942b4d1f5f6ebef, type: 3}
+    mixer: {fileID: 24300002, guid: 2038448860bd7e4418a8e92560c75409, type: 2}
+    volume: 0.4
+    pitch: 1
+    isLooping: 1
+    playOnStart: 1
+    source: {fileID: 0}
+  - name: Hit2
+    clip: {fileID: 8300000, guid: 3f0716e78e2cc2949bd1d0644e3bcee1, type: 3}
+    mixer: {fileID: 24300002, guid: 2038448860bd7e4418a8e92560c75409, type: 2}
+    volume: 0.5
+    pitch: 1
+    isLooping: 0
+    playOnStart: 0
+    source: {fileID: 0}
+  - name: Hit1
+    clip: {fileID: 8300000, guid: 6c26976017ed3354492e3d786ff03f80, type: 3}
+    mixer: {fileID: 24300002, guid: 2038448860bd7e4418a8e92560c75409, type: 2}
+    volume: 0.5
+    pitch: 1
+    isLooping: 0
+    playOnStart: 0
+    source: {fileID: 0}

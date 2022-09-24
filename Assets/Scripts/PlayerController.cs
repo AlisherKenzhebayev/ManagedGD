@@ -74,6 +74,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField()]
     [Tooltip("In-Combat Window (s)")]
     private float inCombatTimeWindow = 2.0f;
+    [SerializeField]
+    private Animator swordAnimator;
 
     // PRIVATE
 
@@ -142,7 +144,7 @@ public class PlayerController : MonoBehaviour
 
         TimerUpdates();
 
-        Debug.Log("Horizontal Velocity - " + Mathf.Abs(m_RigidBody.velocity.x));
+        //Debug.Log("Horizontal Velocity - " + Mathf.Abs(m_RigidBody.velocity.x));
     }
 
     private void TimerUpdates()
@@ -210,6 +212,7 @@ public class PlayerController : MonoBehaviour
             if (hasAttacked)
             {
                 animator.SetTrigger("Attack");
+                swordAnimator.SetTrigger("Attack");
             }
 
             if (hasWallAttached)

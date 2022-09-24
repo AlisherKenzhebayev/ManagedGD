@@ -762,11 +762,11 @@ PlayerSettings:
   m_MobileRenderingPath: 1
   metroPackageName: Template3D
   metroPackageVersion: 1.0.0.0
-  metroCertificatePath: 
+  metroCertificatePath: G:\U3D Projects\MGD Game\Assets\WSATestCertificate.pfx
   metroCertificatePassword: 
-  metroCertificateSubject: 
-  metroCertificateIssuer: 
-  metroCertificateNotAfter: 0000000000000000
+  metroCertificateSubject: Alisher Kenzhebayev
+  metroCertificateIssuer: Alisher Kenzhebayev
+  metroCertificateNotAfter: 003e9c893aefd901
   metroApplicationDescription: Template_3D
   wsaImages: {}
   metroTileShortName: MGD Game
