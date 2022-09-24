@@ -21,6 +21,7 @@
 	- Both PC + Android, moveset was designed for both
 2. Plugins used [R5] 
 	- Cinemachine (Player camera follow, slight delay)
+	- DoTween - the tweening on the cursed objects expansion 
 3. What have you done for [R6] (Editor Extensions)
 	- DONE: Linking of background scrolling with other game objects, to simulate attachedness (lights, moon as examples)
 		+ Pros: Background scroll linking with other objects, does remove the necessity to copy data every time.
