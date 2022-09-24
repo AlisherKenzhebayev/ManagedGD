@@ -1,5 +1,5 @@
 # MGD Game
-- UPD: 16 h spent
+- UPD: 4 / 4 / 2 / 2 / 4 / 10 / 8 / 4 / 4 = 42+ h spent
 - 2D lights using Laighter + URP pipeline
 
 *Images and Icons are DALL.E generated*
